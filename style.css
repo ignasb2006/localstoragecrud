@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&display=swap');
+
+body {
+    background-image: url("Images/O5X8IJ0.jpg");
+    font-family: "Nothing You Could Do", cursive;
+}
+
+.main {
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30vw;
+    background-color: white;
+    border-right: 10px solid #d8d8d8;
+    border-bottom: 10px solid #d8d8d8;
+    border-radius: 16px;
+    height: 70vh;
+}
+
+.notebook-rings {
+    width: 100%;
+    height: 3%;
+    display: flex;
+    justify-content: center;
+    gap: 9%
+}
+
+.ring {
+    position: relative;
+    width: 1%;
+    background-color: lightgray;
+    height: 200%;
+    z-index: 0;
+    transform: translate(0,-50%);
+    border-radius: 100% 0 0 0;
+}
+
+.hole {
+    position: relative;
+    height: 50%;
+    aspect-ratio: 1/1;
+    background-color: black;
+    border-left: 5px solid #d8d8d8;
+    border-top: 5px solid #d8d8d8;
+    border-radius: 50%;
+    transform: translate(-33%,125%);
+}
+
+h1 {
+    margin-top: 5%;
+    font-weight: 6400;
+    text-align: center;
+    padding-bottom: 2%;
+    border-bottom: 8px dashed black;
+}
+
+.action-buttons {
+    height: 6%;
+    display: flex;
+    justify-content: right;
+    gap: 3%;
+    padding-bottom: 2%;
+    border-bottom: 8px dashed black;
+}
+
+.action-button {
+    flex-shrink: 1;
+    aspect-ratio: 1/1;
+    background: 0;
+    border: 0;
+    font-family: "Nothing You Could Do", cursive;
+    font-size: 32px;
+    transition: 0.1s;
+}
+
+.action-input {
+    flex-grow: 1;
+    margin-left: 5%;
+    border: none;
+    border-bottom: 4px dotted salmon;
+    font-size: 20px;
+}
+
+.action-input:focus {
+    outline: none;
+
+}
+
+.action-number {
+    width: 16%;
+    margin-left: 1%;
+    border: none;
+    border-bottom: 4px dotted salmon;
+    font-size: 20px;
+}
+
+.action-number:focus {
+    outline: none;
+
+}
+
+.action-button:hover {
+    transform: rotate(15deg);
+    font-size: 40px;
+    color: gray;
+}
+
+.items {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+}
+
+.item {
+    width: 100%;
+    height: 5vh;
+    border-bottom: 4px dotted black;
+    margin-top: 20px;
+    display: flex;
+    overflow: hidden;
+}
+
+.item-name {
+    font-family: "Nothing You Could Do", cursive;
+    margin-left: 3%;
+    font-size: 32px;
+    font-weight: 600;
+    flex-grow: 1;
+    border: 0;
+    user-select: none;
+    background: 0;
+}
+
+.item-name:focus {
+    outline: none;
+}
+
+.item-amount {
+    margin-left: 2%;
+    font-size: 24px;
+    text-align: left;
+    font-weight: 1000;
+}
+
+.item-number {
+    width: 80%;
+    height: 60%;
+    border: 0;
+    outline: 0;
+    font-family: "Nothing You Could Do", cursive;
+    font-weight: 1000;
+    font-size: 32px;
+    background: 0;
+}
+
+.item-edit {
+    margin-left: 2%;
+    font-size: 24px;
+    aspect-ratio: 1/1;
+    background: 0;
+    border: none;
+    transition: 0.1s;
+}
+
+.item-edit:hover {
+    transform: rotate(15deg);
+    font-size: 32px;
+    color: gray;
+}
+
+.item-remove {
+    font-family: "Nothing You Could Do", cursive;
+    font-weight: 1600;
+    margin-left: 2%;
+    font-size: 24px;
+    aspect-ratio: 1/1;
+    background: 0;
+    border: none;
+    transition: 0.1s;
+}
+
+.item-remove:hover {
+    transform: rotate(15deg);
+    font-size: 32px;
+    color: gray;
+}
+
+.item-editing {
+    user-select: text;
+}
