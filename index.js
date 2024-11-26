@@ -1,66 +1,89 @@
-let itemsDiv = document.getElementById("itemsHolder");
+const itemsDiv = document.getElementById("itemsHolder");
+const actionName = document.getElementById("actionName")
+const actionNumber = document.getElementById("actionNumber")
+const actionAdd = document.getElementById("actionAdd")
 
-let actionName = document.getElementById("actionName")
-let actionNumber = document.getElementById("actionNumber")
-let actionAdd = document.getElementById("actionAdd")
+localStorage.clear();
 
 const itemData = JSON.parse(localStorage.getItem("data")) || [];
 
+console.log(itemData);
 
-const addItem = (name,amount) => {
-    let itemID = name.toLowerCase().replace(/ /g,"_");
-    if (document.getElementById(itemID) === null){
-        let appendHTML = 
-        `<div class="item" id="${itemID}">
-                    <input class="item-name" id="${itemID}-name">
-                    <div class="item-amount">
-                        x<input type="number" class="item-number" id="${itemID}-number">
-                    </div>
-                    <button class="item-edit" id="${itemID}-edit">✎</button>
-                    <button class="item-remove" id="${itemID}-remove">X</button>
-                </div>
-        `
-        itemsDiv.innerHTML += appendHTML;
+const addOrUpdateItem = (name,amount) => {
+    const itemID = name.toLowerCase().replace(/ /g,"_");
+
+    const index = itemData.findIndex((item) => item.id === itemID);
     
-        let itemName = document.getElementById(`${itemID}-name`);
-        itemName.value = name;
-        itemName.disabled = true;
-        let itemNumber = document.getElementById(`${itemID}-number`);
-        itemNumber.value = amount;
-        itemNumber.disabled = true;
-        
-        let addData = {
-            id: itemID,
-            name: name,
-            amount: amount
-        }
+    const itemObj = {
+        id: Date.now(),
+        name: name,
+        amount: amount
+    };
 
-        localStorage.setItem("data", JSON.stringify(addData));
+    if (index === -1){
+        itemData.push(itemObj);
     } else {
         alert("This item already exists!");
+        return;
     }
-    
-}
 
-itemData.forEach(({id,name,amount}) => {
-    addItem(name,amount)
-});
+    localStorage.setItem("data", JSON.stringify(itemData));
+    updateContainer();
+    reset();
+};
 
-const addButton = () => {
+const updateContainer = () => {
+    itemsDiv.innerHTML = "";
+
+    itemData.forEach(
+        ({id, name, amount}) => {
+            itemsDiv.innerHTML += `
+                <div class="item" id="${id}">
+                    <input class="item-name" id="${id}-name">
+                    <div class="item-amount">
+                        x<input type="number" class="item-number" id="${id}-number">
+                    </div>
+                    <button onclick="editItem(this)" class="item-edit" id="${id}-edit">✎</button>
+                    <button onclick="deleteItem(this)" class="item-remove" id="${id}-remove">X</button>
+                </div>
+            `;
+            document.getElementById(`${id}-name`).setAttribute("value",name);
+            document.getElementById(`${id}-name`).setAttribute("disabled",true);
+            document.getElementById(`${id}-number`).setAttribute("value",amount);
+            document.getElementById(`${id}-number`).setAttribute("disabled",true);
+            
+        }
+        
+    );
+};
+
+const deleteItem = (el) => {
+    const index = itemData.findIndex(
+        (item) => item.id === el.parentElement.id
+    );
+
+    el.parentElement.remove();
+    itemData.splice(index,1);
+    localStorage.setItem("data", JSON.stringify(itemData));
+};
+
+const reset = () => {
+    actionName.value = "";
+    actionNumber.value = "";
+};
+
+actionAdd.addEventListener("click", () => {
     let name = actionName.value;
     let amount = Number(actionNumber.value);
 
     if (name.replace(/\s/g,"") !== ""){
         if (amount > 0) {
-            addItem(name,amount);
-            actionName.value = "";
-            actionNumber.value = "";
+            addOrUpdateItem(name,amount);
+            reset();
         } else {
             alert("Enter an amount!")
         }
     } else {
         alert("Enter a name!")
     }
-}
-
-actionAdd.addEventListener('click',addButton)
+});
