@@ -3,9 +3,8 @@ const actionName = document.getElementById("actionName")
 const actionNumber = document.getElementById("actionNumber")
 const actionAdd = document.getElementById("actionAdd")
 
-localStorage.clear();
-
-const itemData = JSON.parse(localStorage.getItem("data")) || [];
+const itemData = JSON.parse(localStorage.getItem('data')) ?? [];
+let currentEdit = 0;
 
 console.log(itemData);
 
@@ -15,7 +14,7 @@ const addOrUpdateItem = (name,amount) => {
     const index = itemData.findIndex((item) => item.id === itemID);
     
     const itemObj = {
-        id: Date.now(),
+        id: Date.now().toString(),
         name: name,
         amount: amount
     };
@@ -27,7 +26,7 @@ const addOrUpdateItem = (name,amount) => {
         return;
     }
 
-    localStorage.setItem("data", JSON.stringify(itemData));
+    localStorage.setItem('data', JSON.stringify(itemData));
     updateContainer();
     reset();
 };
@@ -58,14 +57,46 @@ const updateContainer = () => {
 };
 
 const deleteItem = (el) => {
+    
     const index = itemData.findIndex(
-        (item) => item.id === el.parentElement.id
+        (item) => item.id == el.parentElement.id
     );
+
 
     el.parentElement.remove();
     itemData.splice(index,1);
     localStorage.setItem("data", JSON.stringify(itemData));
 };
+
+const editItem = (el) => {
+    const id = el.parentElement.id
+
+
+    if (currentEdit == 0) {
+        currentEdit = id;
+        document.getElementById(`${id}-name`).disabled = false;
+        document.getElementById(`${id}-number`).disabled = false;
+        document.getElementById(`${id}-name`).focus();
+    } else if (currentEdit == id){
+        document.getElementById(`${id}-name`).setAttribute("disabled",true);
+        document.getElementById(`${id}-number`).setAttribute("disabled",true);
+        
+        const index = itemData.findIndex((item) => item.id == id);
+
+        const itemObj = {
+            id: id,
+            name: document.getElementById(`${id}-name`).value,
+            amount: document.getElementById(`${id}-number`).value
+        };
+
+        itemData[index] = itemObj;
+        
+        currentEdit = 0;
+
+        localStorage.setItem('data', JSON.stringify(itemData));
+        updateContainer();
+    }
+}
 
 const reset = () => {
     actionName.value = "";
@@ -87,3 +118,5 @@ actionAdd.addEventListener("click", () => {
         alert("Enter a name!")
     }
 });
+
+updateContainer();
